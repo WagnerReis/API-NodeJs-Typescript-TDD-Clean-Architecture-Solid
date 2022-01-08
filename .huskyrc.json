@@ -1,5 +1,7 @@
 {
-  "hooks": {
-    "pre-commit": "lint-staget"
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staget"
+    }
   }
 }
