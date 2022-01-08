@@ -1,0 +1,7 @@
+{
+  "name": "CLEN-NODE-API",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "WagnerReis <wagnerreis1997@gmail.com>",
+  "license": "MIT"
+}
