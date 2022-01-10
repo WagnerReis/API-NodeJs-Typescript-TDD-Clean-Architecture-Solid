@@ -8,6 +8,7 @@ export class SignUpController implements Controller {
 
   constructor(emailValidator: EmailValidator, addAccountStub: AddAccount) {
     this.emailValidator = emailValidator
+    this.addAccount = addAccountStub
   }
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
