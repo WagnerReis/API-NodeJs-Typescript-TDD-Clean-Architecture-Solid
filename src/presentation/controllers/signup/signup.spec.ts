@@ -4,7 +4,7 @@ import { EmailValidator, AccountModel, AddAccount, AddAccountModel } from './sig
 
 const makeEmailValidator = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
-    isValid(email: string): boolean {
+    isValid (email: string): boolean {
       return true
     }
   }
@@ -12,34 +12,34 @@ const makeEmailValidator = (): EmailValidator => {
 }
 
 const makeAddAccount = (): AddAccount => {
-  class addAccountStub implements AddAccount {
-    async add(account: AddAccountModel): Promise<AccountModel> {
+  class AddAccountStub implements AddAccount {
+    async add (account: AddAccountModel): Promise<AccountModel> {
       const fakeAccount = {
         id: 'valid_id',
         name: 'valid_name',
         email: 'valid_email@mail.com',
         password: 'valid_password'
       }
-      return new Promise(resolve => resolve(fakeAccount))
+      return await new Promise(resolve => resolve(fakeAccount))
     }
   }
-  return new addAccountStub()
+  return new AddAccountStub()
 }
 
 interface SutTypes {
   sut: SignUpController
   emailValidatorStub: EmailValidator
-  addAccountStub: AddAccount
+  AddAccountStub: AddAccount
 }
 
 const makeSut = (): SutTypes => {
   const emailValidatorStub = makeEmailValidator()
-  const addAccountStub = makeAddAccount()
-  const sut = new SignUpController(emailValidatorStub, addAccountStub)
+  const AddAccountStub = makeAddAccount()
+  const sut = new SignUpController(emailValidatorStub, AddAccountStub)
   return {
     sut,
     emailValidatorStub,
-    addAccountStub
+    AddAccountStub
   }
 }
 
@@ -92,7 +92,7 @@ describe('SignUp Controller', () => {
       body: {
         name: 'any_name',
         email: 'any_email@mail.com',
-        password: 'any_password',
+        password: 'any_password'
       }
     }
     const httpResponse = await sut.handle(httpRequest)
@@ -165,9 +165,9 @@ describe('SignUp Controller', () => {
   })
 
   test('Should return 500 if AddAccount throws', async () => {
-    const { sut, addAccountStub } = makeSut()
-    jest.spyOn(addAccountStub, 'add').mockImplementationOnce(async () => {
-      return new Promise((resolve, reject) => reject(new Error()))
+    const { sut, AddAccountStub } = makeSut()
+    jest.spyOn(AddAccountStub, 'add').mockImplementationOnce(async () => {
+      return await new Promise((resolve, reject) => reject(new Error()))
     })
     const httpRequest = {
       body: {
@@ -183,8 +183,8 @@ describe('SignUp Controller', () => {
   })
 
   test('Should call AddAccount with correct values', async () => {
-    const { sut, addAccountStub } = makeSut()
-    const addSpy = jest.spyOn(addAccountStub, 'add')
+    const { sut, AddAccountStub } = makeSut()
+    const addSpy = jest.spyOn(AddAccountStub, 'add')
     const httpRequest = {
       body: {
         name: 'any_name',
